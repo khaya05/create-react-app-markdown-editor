@@ -1,3 +1,11 @@
+import { doc, updateDoc } from 'firebase/firestore';
+import { useGlobalContext } from '../context/context';
+import { db } from '../firebase-config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiActions } from '../store/uiSlice';
+import '../styles/Navbar.css';
 import {
   barsIcon,
   closeIcon,
@@ -7,35 +15,21 @@ import {
   saveIcon,
 } from '../assets';
 
-import { doc, updateDoc } from 'firebase/firestore';
-import { useGlobalContext } from '../context/context';
-import { db } from '../firebase-config';
-
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-import '../styles/Navbar.css';
-
 function Navbar() {
-  const {
-    showAside,
-    isEditing,
-    setIsEditing,
-    setShowAside,
-    setShowModal,
-    filename,
-    setFilename,
-    fileContents,
-    currentFile,
-    preferrersLightMode,
-  } = useGlobalContext();
+  const dispatch = useDispatch();
+  const showAside = useSelector((state) => state.ui.showAside);
+  const isEditing = useSelector((state) => state.ui.isEditing);
+  const theme = useSelector((state) => state.ui.preferrersLightMode);
+
+  const { filename, setFilename, fileContents, currentFile } =
+    useGlobalContext();
 
   const handleChange = (e) => {
     setFilename(e.target.value);
   };
 
   const handleDelete = () => {
-    setShowModal(true);
+    dispatch(uiActions.toggleModal());
   };
 
   const notify = () => {
@@ -47,7 +41,7 @@ function Navbar() {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: preferrersLightMode ? 'light' : 'dark',
+      theme: theme ? 'light' : 'dark',
     });
   };
 
@@ -62,7 +56,7 @@ function Navbar() {
       <nav>
         <div
           className="nav__menu-btn-container"
-          onClick={() => setShowAside((oldState) => !oldState)}
+          onClick={() => dispatch(uiActions.toggleAside())}
         >
           <img
             src={showAside ? closeIcon : barsIcon}
@@ -92,8 +86,8 @@ function Navbar() {
               <input
                 type="text"
                 id="nav__file-name"
-                onFocus={() => setIsEditing(true)}
-                onBlur={() => setIsEditing(false)}
+                onFocus={() => dispatch(uiActions.setIsEditing(true))}
+                onBlur={() => dispatch(uiActions.setIsEditing(false))}
                 value={filename}
                 onChange={(e) => handleChange(e)}
               />

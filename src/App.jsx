@@ -1,11 +1,19 @@
+import { useEffect } from 'react';
 import Aside from './components/Aside';
 import { Main, Navbar, DeleteModal } from './components';
-import { useGlobalContext } from './context/context';
 
 import './App.css';
+import { useSelector } from 'react-redux';
 
 function App() {
-  const { showAside, showModal } = useGlobalContext();
+  const showAside = useSelector((state) => state.ui.showAside);
+  const showModal = useSelector((state) => state.ui.showModal);
+  const theme = useSelector((state) => state.ui.preferrersLightMode);
+
+  // set theme
+  useEffect(() => {
+    document.documentElement.className = theme ? 'light-mode' : 'dark-mode';
+  }, [theme]);
 
   return (
     <>

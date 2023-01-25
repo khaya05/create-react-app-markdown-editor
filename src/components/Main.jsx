@@ -3,36 +3,33 @@ import ReactMarkdown from 'react-markdown';
 import { hidePreviewIcon, showPreviewIcon } from '../assets';
 import { useGlobalContext } from '../context/context';
 import { CSSTransition } from 'react-transition-group';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiActions } from '../store/uiSlice';
 
 import '../styles/Main.css';
 
 function Main() {
-  const {
-    showPreview,
-    setShowPreview,
-    showInput,
-    setShowInput,
-    screenWidth,
-    fileContents,setFileContents
-  } = useGlobalContext();
+  const dispatch = useDispatch();
+  const showPreview = useSelector((state) => state.ui.showPreview);
+  const showInput = useSelector((state) => state.ui.showInput);
+
+  const { screenWidth, fileContents, setFileContents } = useGlobalContext();
 
   const handleMarkdownClick = () => {
-    setShowInput(false);
-    setShowPreview(true);
+    dispatch(uiActions.setInput(false));
+    dispatch(uiActions.setPreview(true));
   };
 
   const handlePreviewClick = () => {
-    setShowInput((oldState) => !oldState);
+    dispatch(uiActions.toggleInput());
     if (screenWidth < 768) {
-      setShowPreview(false);
+      dispatch(uiActions.setPreview(false));
     }
   };
 
   const changeFileContents = (e) => {
-    setFileContents(e.target.value)
-
-    
-  }
+    setFileContents(e.target.value);
+  };
 
   return (
     <main>

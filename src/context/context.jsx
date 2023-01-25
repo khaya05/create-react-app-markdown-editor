@@ -12,13 +12,7 @@ const AppProvider = ({ children }) => {
   const [currentFile, setCurrentFile] = useState({});
   const [filename, setFilename] = useState('');
   const [fileContents, setFileContents] = useState('');
-  const [showAside, setShowAside] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
-  const [showInput, setShowInput] = useState(true);
   const [screenWidth, setScreenWidth] = useState(null);
-  const [preferrersLightMode, setPreferrersLightMode] = useState(true);
 
   // https://www.pluralsight.com/guides/re-render-react-component-on-window-resize
 
@@ -51,16 +45,10 @@ const AppProvider = ({ children }) => {
   // always show preview on larger devices
   useEffect(() => {
     if (screenWidth && screenWidth >= 768) {
-      setShowPreview(true);
+      // setShowPreview(true);
     }
   }, [screenWidth]);
 
-  // set light-theme as default
-  useEffect(() => {
-    document.documentElement.className = preferrersLightMode
-      ? 'light-mode'
-      : 'dark-mode';
-  }, [preferrersLightMode]);
 
   // firebase
 
@@ -87,13 +75,7 @@ const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        showAside,
-        isEditing,
-        showModal,
-        showPreview,
-        showInput,
         screenWidth,
-        preferrersLightMode,
         filename,
         fileContents,
         index,
@@ -102,12 +84,6 @@ const AppProvider = ({ children }) => {
         setIndex,
         setFilename,
         setFileContents,
-        setPreferrersLightMode,
-        setShowInput,
-        setShowPreview,
-        setShowModal,
-        setShowAside,
-        setIsEditing,
       }}
     >
       {children}

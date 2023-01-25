@@ -3,6 +3,8 @@ import { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { useGlobalContext } from '../context/context';
 import { db } from '../firebase-config';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiActions } from '../store/uiSlice';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,16 +12,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../styles/DeleteModal.css';
 
 const Modal = () => {
+  const dispatch = useDispatch();
+  const showModal = useSelector((state) => state.ui.showModal);
+
   const {
-    showModal,
-    setShowModal,
     currentFile,
     setFilename,
     setFileContents,
     preferrersLightMode,
   } = useGlobalContext();
+
   const toggleModal = () => {
-    setShowModal(false);
+    dispatch(uiActions.toggleModal());
   };
 
   const notify = () => {

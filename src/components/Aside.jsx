@@ -4,11 +4,14 @@ import { ThemeButton } from '../components';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 import '../styles/Aside.css';
 
 function Aside() {
-  const { showAside, files, setIndex } = useGlobalContext();
+  const showAside = useSelector(state => state.ui.showAside)
+
+  const { files, setIndex } = useGlobalContext();
   const filesCollectionRef = collection(db, 'files');
 
   const addNewFile = async () => {
