@@ -41,7 +41,7 @@ const uiSlice = createSlice({
     },
 
     toggleInput(state) {
-      state.showInput = !state.toggleInput;
+      state.showInput = !state.showInput;
     },
 
     toggleTheme(state) {
