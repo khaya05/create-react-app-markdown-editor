@@ -6,8 +6,8 @@ const uiSlice = createSlice({
     showAside: false,
     isEditing: false,
     showModal: false,
-    showPreview: false,
-    showInput: false,
+    showPreview: !false,
+    showInput: !false,
     screenWidth: null,
     preferrersLightMode: true,
   },
@@ -41,12 +41,16 @@ const uiSlice = createSlice({
     },
 
     toggleInput(state) {
-      state.showInput = !state.isEditing;
+      state.showInput = !state.toggleInput;
     },
 
     toggleTheme(state) {
       state.preferrersLightMode = !state.preferrersLightMode;
     },
+
+    setScreenWidth(state, action) {
+      state.screenWidth = action.payload
+    }
   },
 });
 

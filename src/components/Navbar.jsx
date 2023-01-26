@@ -1,5 +1,4 @@
 import { doc, updateDoc } from 'firebase/firestore';
-import { useGlobalContext } from '../context/context';
 import { db } from '../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,18 +13,19 @@ import {
   logo,
   saveIcon,
 } from '../assets';
+import { markdownActions } from '../store/markdownSlice';
 
 function Navbar() {
   const dispatch = useDispatch();
   const showAside = useSelector((state) => state.ui.showAside);
   const isEditing = useSelector((state) => state.ui.isEditing);
   const theme = useSelector((state) => state.ui.preferrersLightMode);
-
-  const { filename, setFilename, fileContents, currentFile } =
-    useGlobalContext();
+  const filename = useSelector(state => state.markdown.filename)
+  const fileContents = useSelector(state => state.markdown.fileContents)
+  const currentFile = useSelector(state => state.markdown.currentFile)
 
   const handleChange = (e) => {
-    setFilename(e.target.value);
+    dispatch(markdownActions.setFileName(e.target.value));
   };
 
   const handleDelete = () => {

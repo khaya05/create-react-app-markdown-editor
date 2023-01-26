@@ -1,17 +1,17 @@
 import { fileIcon, logo } from '../assets';
-import { useGlobalContext } from '../context/context';
 import { ThemeButton } from '../components';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import '../styles/Aside.css';
+import { markdownActions } from '../store/markdownSlice';
 
 function Aside() {
+  const dispatch = useDispatch()
   const showAside = useSelector(state => state.ui.showAside)
-
-  const { files, setIndex } = useGlobalContext();
+  const files = useSelector(state => state.markdown.files)
   const filesCollectionRef = collection(db, 'files');
 
   const addNewFile = async () => {
@@ -26,15 +26,16 @@ function Aside() {
   };
 
   const handleFileClick = (e, id) => {
-    const allFiles = document.querySelectorAll('.aside__file');
-    allFiles.forEach((file) => {
-      file.setAttribute('aria-selected', 'false');
-    });
-    e.target.setAttribute('aria-selected', 'true');
+    // const allFiles = document.querySelectorAll('.aside__file');
+    // allFiles.forEach((file) => {
+    //   file.setAttribute('aria-selected', 'false');
+    // });
+    // e.target.setAttribute('aria-selected', 'true');
 
     const currentFile = files.find((file) => file.id === id);
     const currentFileIndex = files.indexOf(currentFile);
-    setIndex(currentFileIndex);
+    
+   dispatch(markdownActions.setIndex(currentFileIndex));
   };
 
   return (

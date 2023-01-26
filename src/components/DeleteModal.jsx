@@ -1,7 +1,6 @@
 import { deleteDoc, doc } from 'firebase/firestore';
 import { Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import { useGlobalContext } from '../context/context';
 import { db } from '../firebase-config';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../store/uiSlice';
@@ -10,17 +9,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import '../styles/DeleteModal.css';
+import { markdownActions } from '../store/markdownSlice';
 
 const Modal = () => {
   const dispatch = useDispatch();
   const showModal = useSelector((state) => state.ui.showModal);
-
-  const {
-    currentFile,
-    setFilename,
-    setFileContents,
-    preferrersLightMode,
-  } = useGlobalContext();
+  const theme = useSelector((state) => state.ui.preferrersLightMode);
+  const currentFile = useSelector((state) => state.markdown.currentFile);
 
   const toggleModal = () => {
     dispatch(uiActions.toggleModal());
@@ -35,15 +30,15 @@ const Modal = () => {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: preferrersLightMode ? 'light' : 'dark',
+      theme: theme ? 'light' : 'dark',
     });
   };
 
   const deleteFile = async () => {
     const fileDoc = doc(db, 'files', currentFile.id);
     await deleteDoc(fileDoc);
-    setFilename('');
-    setFileContents('');
+    dispatch(markdownActions.setFileName(''));
+    dispatch(markdownActions.setFileContents(''));
     notify();
   };
 

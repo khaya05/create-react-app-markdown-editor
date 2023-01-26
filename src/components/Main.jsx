@@ -1,19 +1,18 @@
-import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { hidePreviewIcon, showPreviewIcon } from '../assets';
-import { useGlobalContext } from '../context/context';
 import { CSSTransition } from 'react-transition-group';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../store/uiSlice';
 
+import { markdownActions } from '../store/markdownSlice';
 import '../styles/Main.css';
 
 function Main() {
   const dispatch = useDispatch();
   const showPreview = useSelector((state) => state.ui.showPreview);
   const showInput = useSelector((state) => state.ui.showInput);
-
-  const { screenWidth, fileContents, setFileContents } = useGlobalContext();
+  const fileContents = useSelector((state) => state.markdown.fileContents);
+  const screenWidth = useSelector((state) => state.ui.screenWidth);
 
   const handleMarkdownClick = () => {
     dispatch(uiActions.setInput(false));
@@ -28,7 +27,7 @@ function Main() {
   };
 
   const changeFileContents = (e) => {
-    setFileContents(e.target.value);
+    dispatch(markdownActions.setFileContents(e.target.value));
   };
 
   return (
