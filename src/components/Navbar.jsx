@@ -20,9 +20,10 @@ function Navbar() {
   const showAside = useSelector((state) => state.ui.showAside);
   const isEditing = useSelector((state) => state.ui.isEditing);
   const theme = useSelector((state) => state.ui.preferrersLightMode);
-  const filename = useSelector(state => state.markdown.filename)
-  const fileContents = useSelector(state => state.markdown.fileContents)
-  const currentFile = useSelector(state => state.markdown.currentFile)
+  const filename = useSelector((state) => state.markdown.filename);
+  const fileContents = useSelector((state) => state.markdown.fileContents);
+  const currentFile = useSelector((state) => state.markdown.currentFile);
+  const isLoggedIn = useSelector((state) => state.markdown.isLoggedIn);
 
   const handleChange = (e) => {
     dispatch(markdownActions.setFileName(e.target.value));
@@ -34,7 +35,20 @@ function Navbar() {
 
   const notify = () => {
     toast.success('File saved successfully', {
-      position: 'top-left',
+      position: 'top-center',
+      autoClose: 1500,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: theme ? 'light' : 'dark',
+    });
+  };
+
+  const notifyLogin = () => {
+    toast.success('Logged in successfully', {
+      position: 'top-center',
       autoClose: 1500,
       hideProgressBar: true,
       closeOnClick: true,
@@ -49,6 +63,11 @@ function Navbar() {
     const file = doc(db, 'files', currentFile.id);
     updateDoc(file, { name: filename, contents: fileContents });
     notify();
+  };
+
+  const handleLogin = () => {
+    dispatch(markdownActions.logUserIn());
+    notifyLogin();
   };
 
   return (
@@ -76,44 +95,55 @@ function Navbar() {
               <img src={fileIcon} alt="" aria-hidden="true" />
             </div>
 
-            <div className="nav__document-info-container">
-              <label
-                htmlFor="nav__file-name"
-                className={`${isEditing ? 'show-label' : ''}`}
-              >
-                Document name
-              </label>
-              <input
-                type="text"
-                id="nav__file-name"
-                onFocus={() => dispatch(uiActions.setIsEditing(true))}
-                onBlur={() => dispatch(uiActions.setIsEditing(false))}
-                value={filename}
-                onChange={(e) => handleChange(e)}
-              />
-            </div>
+            <form className="nav__document-info-container">
+              <fieldset disabled={isLoggedIn ? '' : 'disabled'}>
+                <label
+                  htmlFor="nav__file-name"
+                  className={`${isEditing ? 'show-label' : ''}`}
+                >
+                  Document name
+                </label>
+                <input
+                  type="text"
+                  id="nav__file-name"
+                  onFocus={() => dispatch(uiActions.setIsEditing(true))}
+                  onBlur={() => dispatch(uiActions.setIsEditing(false))}
+                  value={filename}
+                  onChange={(e) => handleChange(e)}
+                />
+              </fieldset>
+            </form>
           </div>
-          <div className="nav__file-info-right">
-            <div className="nav__delete-file-container">
-              <img
-                src={deleteIcon}
-                alt="delete-file"
-                aria-label="delete file"
-                onClick={handleDelete}
-              />
-            </div>
 
-            <div className="nav__save-file-container">
-              <button
-                aria-label="save file"
-                className="orange-btn"
-                onClick={saveFile}
-              >
-                <img src={saveIcon} alt="" aria-hidden="true" />
-                <span>save document</span>
-              </button>
-            </div>
-          </div>
+          {isLoggedIn ? (
+            <>
+              <div className="nav__file-info-right">
+                <div className="nav__delete-file-container">
+                  <img
+                    src={deleteIcon}
+                    alt="delete-file"
+                    aria-label="delete file"
+                    onClick={handleDelete}
+                  />
+                </div>
+
+                <div className="nav__save-file-container">
+                  <button
+                    aria-label="save file"
+                    className="orange-btn"
+                    onClick={saveFile}
+                  >
+                    <img src={saveIcon} alt="" aria-hidden="true" />
+                    <span>save document</span>
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <button className="orange-btn login-btn" onClick={handleLogin}>
+              Login
+            </button>
+          )}
         </div>
       </nav>
       <ToastContainer />

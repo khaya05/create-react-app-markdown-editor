@@ -4,6 +4,7 @@ const markdownSlice = createSlice({
   name: 'markdownSlice',
   initialState: {
     index: 0,
+    isLoggedIn: false,
     files: [],
     currentFile: {},
     filename: '',
@@ -28,6 +29,14 @@ const markdownSlice = createSlice({
 
     setFileContents(state, action) {
       state.fileContents = action.payload;
+    },
+
+    logUserIn(state) {
+      state.isLoggedIn = true;
+    },
+
+    logUserOut(state) {
+      state.isLoggedIn = false;
     },
   },
 });
