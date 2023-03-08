@@ -1,19 +1,17 @@
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from './firebase-config';
 import { useEffect } from 'react';
-import Aside from './components/Aside';
-import { Main, Navbar, DeleteModal } from './components';
 import { useDispatch, useSelector } from 'react-redux';
 import { markdownActions } from './store/markdownSlice';
 
-import './App.css';
 import { uiActions } from './store/uiSlice';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
 
 const filesCollectionRef = collection(db, 'files');
 function App() {
   const dispatch = useDispatch();
-  const showAside = useSelector((state) => state.ui.showAside);
-  const showModal = useSelector((state) => state.ui.showModal);
   const theme = useSelector((state) => state.ui.preferrersLightMode);
   const files = useSelector((state) => state.markdown.files);
   const index = useSelector((state) => state.markdown.index);
@@ -85,22 +83,12 @@ function App() {
   }, [screenWidth, dispatch]);
 
   return (
-    <>
-      <div className="main-container">
-        <div className={`aside__container `}>
-          <Aside />
-        </div>
-        <div
-          className={`main__main-right ${
-            showAside ? 'translate-main-in' : 'translate-main-out'
-          }`}
-        >
-          <Navbar />
-          <Main />
-          {showModal && <DeleteModal />}
-        </div>
-      </div>
-    </>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} exact />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
   );
 }
 

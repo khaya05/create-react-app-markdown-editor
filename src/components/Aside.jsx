@@ -1,13 +1,14 @@
 import { fileIcon, logo } from '../assets';
 import { ThemeButton } from '../components';
 import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../firebase-config';
+import { auth, db } from '../firebase-config';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import { markdownActions } from '../store/markdownSlice';
+import { signOut } from 'firebase/auth';
 
 import '../styles/Aside.css';
-import { markdownActions } from '../store/markdownSlice';
 
 function Aside() {
   const dispatch = useDispatch();
@@ -55,8 +56,12 @@ function Aside() {
   };
 
   const handleLogout = () => {
-    dispatch(markdownActions.logUserOut());
-    notifyLogout();
+    signOut(auth).then(() => {
+      localStorage.clear();
+      dispatch(markdownActions.logUserOut());
+      notifyLogout();
+      window.location.reload(false);
+    });
   };
 
   return (
@@ -116,7 +121,6 @@ function Aside() {
                 Logout
               </button>
             )}
-
           </div>
         </div>
       </aside>

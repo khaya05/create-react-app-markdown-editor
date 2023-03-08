@@ -14,6 +14,7 @@ import {
   saveIcon,
 } from '../assets';
 import { markdownActions } from '../store/markdownSlice';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -140,9 +141,9 @@ function Navbar() {
               </div>
             </>
           ) : (
-            <button className="orange-btn login-btn" onClick={handleLogin}>
+            <Link to='login' className="login-btn" onClick={handleLogin}>
               Login
-            </button>
+            </Link>
           )}
         </div>
       </nav>

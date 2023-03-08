@@ -270,6 +270,16 @@ blockquote p {
 
 .login-btn {
   padding-inline: 20px;
+  padding-block: 8px;
+  text-decoration:none;
+  color:white;
+  border-radius: 4px;
+  background-color: var(--orange);
+}
+
+.login-btn:hover{
+  background-color: var(--orange-hover);
+
 }
 
 // .logout-btn{
