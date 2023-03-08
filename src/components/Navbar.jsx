@@ -117,7 +117,7 @@ function Navbar() {
           </div>
 
           <div className="nav__file-info-right">
-            {isLoggedIn && currentFile.author.id === auth.currentUser.uid && (
+            {isLoggedIn && currentFile?.author?.id === auth?.currentUser?.uid && (
               <>
                 <div className="nav__delete-file-container">
                   <img

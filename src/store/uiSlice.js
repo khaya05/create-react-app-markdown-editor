@@ -10,6 +10,7 @@ const uiSlice = createSlice({
     showInput: !false,
     screenWidth: null,
     preferrersLightMode: true,
+    theme: localStorage.getItem('theme') || 'light',
   },
   reducers: {
     toggleAside(state) {
@@ -37,7 +38,7 @@ const uiSlice = createSlice({
     },
 
     setPreview(state, action) {
-      state.showPreview = action.payload
+      state.showPreview = action.payload;
     },
 
     toggleInput(state) {
@@ -49,8 +50,13 @@ const uiSlice = createSlice({
     },
 
     setScreenWidth(state, action) {
-      state.screenWidth = action.payload
-    }
+      state.screenWidth = action.payload;
+    },
+
+    setTheme(state, action) {
+      state.value = action.payload;
+      localStorage.setItem('theme', action.payload);
+    },
   },
 });
 
