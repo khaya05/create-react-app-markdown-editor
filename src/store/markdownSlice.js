@@ -4,7 +4,7 @@ const markdownSlice = createSlice({
   name: 'markdownSlice',
   initialState: {
     index: 0,
-    isLoggedIn: false,
+    isLoggedIn: localStorage.getItem('isLoggedIn'),
     files: [],
     currentFile: {},
     filename: '',

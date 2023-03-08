@@ -1,5 +1,5 @@
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase-config';
+import { auth, db } from '../firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -116,9 +116,9 @@ function Navbar() {
             </form>
           </div>
 
-          {isLoggedIn ? (
-            <>
-              <div className="nav__file-info-right">
+          <div className="nav__file-info-right">
+            {isLoggedIn && currentFile.author.id === auth.currentUser.uid && (
+              <>
                 <div className="nav__delete-file-container">
                   <img
                     src={deleteIcon}
@@ -138,13 +138,14 @@ function Navbar() {
                     <span>save document</span>
                   </button>
                 </div>
-              </div>
-            </>
-          ) : (
-            <Link to='login' className="login-btn" onClick={handleLogin}>
-              Login
-            </Link>
-          )}
+              </>
+            )}
+            {!isLoggedIn && (
+              <Link to="login" className="login-btn" onClick={handleLogin}>
+                Login
+              </Link>
+            )}
+          </div>
         </div>
       </nav>
       <ToastContainer />

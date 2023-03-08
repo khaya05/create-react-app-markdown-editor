@@ -26,6 +26,7 @@ function Aside() {
       name: 'untitled.md',
       createdAt: formattedDate,
       contents: '',
+      author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
     });
   };
 
