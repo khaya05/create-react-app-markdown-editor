@@ -68,3 +68,13 @@ There is a lot that I learned from this project. I leaned how to animate react a
 - Frontend Mentor - [@khaya05](https://www.frontendmentor.io/profile/khaya05)
 
 # create-react-app-markdown-editor
+
+  # JSM Real Project
+
+  Note: Please ensure you have installed <code><a href="https://nodejs.org/en/download/">nodejs</a></code>
+
+  To preview and run the project on your device:
+  1) Open project folder in <a href="https://code.visualstudio.com/download">Visual Studio Code</a>
+  2) In the terminal, run `npm install`
+  3) Run `npm start` to view project in browser
+  
